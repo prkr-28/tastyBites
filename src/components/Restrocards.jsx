@@ -10,7 +10,7 @@ const Restrocards = ({ resData }) => {
   } = resData.info;
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col">
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col min-h-[320px]">
       <div className="relative">
         <img
           className="w-full h-40 sm:h-44 lg:h-48 object-cover"
@@ -22,19 +22,22 @@ const Restrocards = ({ resData }) => {
           {sla.deliveryTime} min
         </div>
       </div>
-      
-      <div className="p-3 sm:p-4 flex-1 flex flex-col">
-        <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 line-clamp-1">
-          {name}
-        </h3>
-        
-        <p className="text-xs sm:text-sm text-gray-500 mb-2 line-clamp-2 flex-1">
-          {cuisines.join(', ')}
-        </p>
-        
-        <div className="space-y-1 sm:space-y-2">
+
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+        <div>
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1 line-clamp-1">
+            {name}
+          </h3>
+          <p className="text-xs sm:text-sm text-gray-500 mb-2 line-clamp-2 h-[2.5rem]">
+            {cuisines.join(", ")}
+          </p>
+        </div>
+
+        <div className="mt-auto">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700">{costForTwo}</span>
+            <span className="text-sm font-medium text-gray-700">
+              {costForTwo}
+            </span>
             <div className="flex items-center space-x-1">
               <span className="text-xs sm:text-sm font-medium text-green-600">
                 {avgRating} ⭐
@@ -50,7 +53,7 @@ const Restrocards = ({ resData }) => {
   );
 };
 
-// Higher order component for veg label
+// Higher Order Component for Veg Label
 export const withveglabel = (Restrocards) => {
   return ({ resData }) => {
     return (
