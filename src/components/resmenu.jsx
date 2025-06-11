@@ -3,11 +3,13 @@ import ShimmerList from './shimmerList';
 import { useParams } from 'react-router-dom';
 import useRestromenu from '../utils/useRestromenu';
 import useOnlineStatus from '../utils/useOnlinestatus';
+import useLocation from '../utils/useLocation';
 import RestaurantCateg from './rescategories';
 
 const RestroMenu = () => {
   const { resid } = useParams();
-  const resmenu = useRestromenu(resid);
+  const { location } = useLocation();
+  const resmenu = useRestromenu(resid, location.latitude, location.longitude);
   const onlinestatus = useOnlineStatus();
   const [showindex, setshowindex] = useState(0);
 
