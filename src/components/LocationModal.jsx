@@ -71,7 +71,7 @@ const LocationModal = ({
             <h2 className="text-lg sm:text-xl font-bold">Select Location</h2>
             <button
               onClick={onClose}
-              className="text-white hover:text-gray-200 text-2xl font-bold"
+              className="text-white bg-transparent rounded-full px-2 hover:bg-amber-500 text-2xl font-bold"
             >
               ×
             </button>
