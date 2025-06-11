@@ -23,7 +23,7 @@ const Body = () => {
   const fetchdata = async () => {
     try {
       const data = await fetch(
-        `/api/dapi/restaurants/list/v5?offset=0&is-seo-homepage-enabled=true&lat=${location.latitude}&lng=${location.longitude}&carousel=true&third_party_vendor=1`
+      `https://tastybites-n0ge.onrender.com/api/data?lat=${location.latitude}&lng=${location.longitude}`
       );
 
       const json = await data.json();
