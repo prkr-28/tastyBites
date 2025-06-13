@@ -6,12 +6,15 @@ import useOnlineStatus from "../utils/useOnlinestatus.jsx";
 import { withveglabel } from "./Restrocards.jsx";
 import useLocation from "../utils/useLocation.jsx";
 import LocationModal from "./LocationModal.jsx";
+import { fetchRestaurants } from "../utils/api.js";
 
 const Body = () => {
   const [listofrestro, setlistofrestro] = useState([]);
   const [filteredrestro, setfilteredrestro] = useState([]);
   const [searchtext, setsearchtext] = useState("");
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { location, getCurrentLocation, setCustomLocation } = useLocation();
 
   const Restrocardwithveglabel = withveglabel(Restrocards);
@@ -21,12 +24,11 @@ const Body = () => {
   }, [location.latitude, location.longitude]);
 
   const fetchdata = async () => {
+    setIsLoading(true);
+    setError(null);
+    
     try {
-      const data = await fetch(
-        `/api/dapi/restaurants/list/v5?offset=0&is-seo-homepage-enabled=true&lat=${location.latitude}&lng=${location.longitude}&carousel=true&third_party_vendor=1`
-      );
-
-      const json = await data.json();
+      const json = await fetchRestaurants(location.latitude, location.longitude);
       const restaurants =
         json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
           ?.restaurants || [];
@@ -34,9 +36,12 @@ const Body = () => {
       setfilteredrestro(restaurants);
     } catch (error) {
       console.error("Error fetching restaurants:", error);
+      setError("Failed to load restaurants. Please try again.");
       // Fallback to empty array if API fails
       setlistofrestro([]);
       setfilteredrestro([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -83,9 +88,35 @@ const Body = () => {
     getCurrentLocation();
   };
 
-  return listofrestro.length === 0 ? (
-    <ShimmerUI />
-  ) : (
+  const handleRetry = () => {
+    fetchdata();
+  };
+
+  if (isLoading) {
+    return <ShimmerUI />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-red-50 px-4">
+        <div className="text-center">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h1 className="text-xl sm:text-2xl font-semibold text-red-700 mb-2">
+            Something went wrong!
+          </h1>
+          <p className="text-red-600 text-sm sm:text-base mb-4">{error}</p>
+          <button
+            onClick={handleRetry}
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-8 sm:py-12 lg:py-16 relative overflow-hidden">

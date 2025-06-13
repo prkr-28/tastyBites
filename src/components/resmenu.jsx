@@ -9,7 +9,7 @@ import RestaurantCateg from './rescategories';
 const RestroMenu = () => {
   const { resid } = useParams();
   const { location } = useLocation();
-  const resmenu = useRestromenu(resid, location.latitude, location.longitude);
+  const { resmenu, loading, error, refetch } = useRestromenu(resid, location.latitude, location.longitude);
   const onlinestatus = useOnlineStatus();
   const [showindex, setshowindex] = useState(0);
 
@@ -29,8 +29,28 @@ const RestroMenu = () => {
     );
   }
 
-  if (resmenu == null) {
+  if (loading || resmenu == null) {
     return <ShimmerList />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-red-50 px-4">
+        <div className="text-center">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h1 className="text-xl sm:text-2xl font-semibold text-red-700 mb-2">
+            Failed to Load Menu
+          </h1>
+          <p className="text-red-600 text-sm sm:text-base mb-4">{error}</p>
+          <button
+            onClick={refetch}
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const menuSections =
