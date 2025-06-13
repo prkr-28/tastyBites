@@ -10,6 +10,7 @@ import Body from './components/body.jsx';
 import { lazy, Suspense } from 'react';
 import Cart from './components/cart.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import LoadMoreRestaurants from './components/LoadMoreRestaurants.jsx';
 
 const RestroMenu = lazy(() => import('./components/resmenu.jsx'));
 
@@ -37,6 +38,10 @@ const appRouter = createBrowserRouter([
             <Cart />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: '/load-more-restaurants',
+        element: <LoadMoreRestaurants />,
       },
       {
         path: '/restromenu/:resid',

@@ -360,6 +360,18 @@ const Body = () => {
           ))}
         </div>
 
+        {/* Load More Restaurants Button */}
+        {filteredrestro.length > 0 && (
+          <div className="text-center mt-8">
+            <Link
+              to="/load-more-restaurants"
+              className="inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 transform hover:scale-105"
+            >
+              Load More Restaurants 🍽️
+            </Link>
+          </div>
+        )}
+
         {/* No Results */}
         {filteredrestro.length === 0 && listofrestro.length > 0 && (
           <div className="text-center py-12">
